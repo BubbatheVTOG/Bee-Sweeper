@@ -15,8 +15,8 @@ import java.util.*;
 public class BeeSweeper extends JFrame{
 
 	private int gridSize;
-	private int bombAmount;
-	private JButton[][] tiles;
+	private int beeAmount;
+	private Tile[][] tiles;
 	private Random rand = new Random();
 
 	public static void main(String[] args){
@@ -27,7 +27,7 @@ public class BeeSweeper extends JFrame{
 		//TODO:
 		//dialog box for difficulty.
 		gridSize=10;
-		bombAmount=10;
+		beeAmount=10;
 
 		//MenuBar
 		JMenuBar jmb = new JMenuBar();
@@ -41,7 +41,7 @@ public class BeeSweeper extends JFrame{
 		setJMenuBar(jmb);
 
 		//Center
-		tiles = new JButton[gridSize][gridSize];
+		tiles = new Tile[gridSize][gridSize];
 		JPanel jpGrid = new JPanel(new GridLayout(gridSize,gridSize));
 		for(int i = 0; i<gridSize; i++){
 			for(int j =0; j<gridSize; j++){
@@ -49,6 +49,7 @@ public class BeeSweeper extends JFrame{
 				tile.setPreferredSize(new Dimension(64,64));
 				tiles[i][j]=tile;
 				jpGrid.add(tile);
+				//TODO: ASSIGN button ID's
 			}
 		}
 		add(jpGrid,BorderLayout.CENTER);
@@ -66,6 +67,7 @@ public class BeeSweeper extends JFrame{
 		if(x > 0 ){
 			if(tiles[x-1][y].isBee()){
 				beeCount++;
+			}
 		}
 		if(x < gridSize){
 			if(tiles[x+1][y].isBee()){
@@ -78,7 +80,7 @@ public class BeeSweeper extends JFrame{
 			}
 		}
 		if(y < gridSize){
-			if(tiles[y][x+1].isBee(){
+			if(tiles[y][x+1].isBee()){
 				beeCount++;
 			}
 		}
@@ -88,7 +90,7 @@ public class BeeSweeper extends JFrame{
 			}
 		}
 		if( (x < gridSize) && (y < gridSize) ){
-			if(tiles[x+1][y+1].isBee(){
+			if(tiles[x+1][y+1].isBee()){
 				beeCount++;
 			}
 		}
@@ -102,7 +104,7 @@ public class BeeSweeper extends JFrame{
 				beeCount++;
 			}
 		}
-		tiles.[x][y].setBeeCount(beeCount);
+		tiles[x][y].setBeeCount(beeCount);
 	}
 
 	public void floodFill(){
@@ -112,14 +114,14 @@ public class BeeSweeper extends JFrame{
 	public void gameOver(){
 		for(int i =0; i< gridSize; i++){
 			for(int j =0; j<gridSize; j++){
-				tile[i][j].show();
+				tiles[i][j].hasBeenPressed();
 			}
 		}
 	}
 
 	class Tile extends JButton implements MouseListener{
 		private boolean pressed = false;
-		private boolean bee;
+		private boolean bee = false;
 
 		public Tile(){
 			addMouseListener(this);
@@ -127,11 +129,11 @@ public class BeeSweeper extends JFrame{
 
 		public boolean isBee(){return bee;}
 
-		public void seBeeCount(int i){
-			this.setText(i);
+		public void setBeeCount(int i){
+			this.setText(""+i);
 		}
 
-		public void show(){
+		public void hasBeenPressed(){
 			pressed = true;
 		}
 

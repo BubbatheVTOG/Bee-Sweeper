@@ -17,7 +17,6 @@ public class BeeSweeper extends JFrame{
 	private int gridSize;
 	private int bombAmount;
 	private JButton[][] tiles;
-	private boolean gameOver=false;
 	private Random rand = new Random();
 
 	public static void main(String[] args){
@@ -54,8 +53,7 @@ public class BeeSweeper extends JFrame{
 		}
 		add(jpGrid,BorderLayout.CENTER);
 
-
-
+		//TODO: ASSIGN BEES
 
 		pack();
 		setLocationRelativeTo(null);
@@ -63,20 +61,79 @@ public class BeeSweeper extends JFrame{
 		setVisible(true);
 	}
 
-	public void setGameOver(boolean isOver){gameOver=isOver;}
+	public void calcBees(int x, int y){
+		int beeCount=0;
+		if(x > 0 ){
+			if(tiles[x-1][y].isBee()){
+				beeCount++;
+		}
+		if(x < gridSize){
+			if(tiles[x+1][y].isBee()){
+				beeCount++;
+			}
+		}
+		if(y > 0){
+			if(tiles[x][y-1].isBee()){
+				beeCount++;
+			}
+		}
+		if(y < gridSize){
+			if(tiles[y][x+1].isBee(){
+				beeCount++;
+			}
+		}
+		if( (x > 0) && (y > 0) ){
+			if(tiles[x-1][y-1].isBee()){
+				beeCount++;
+			}
+		}
+		if( (x < gridSize) && (y < gridSize) ){
+			if(tiles[x+1][y+1].isBee(){
+				beeCount++;
+			}
+		}
+		if( (x > 0) && (y < gridSize) ){
+			if(tiles[x-1][y+1].isBee()){
+				beeCount++;
+			}
+		}
+		if( (x < gridSize) && (y > 0) ){
+			if(tiles[x+1][y-1].isBee()){
+				beeCount++;
+			}
+		}
+		tiles.[x][y].setBeeCount(beeCount);
+	}
 
-	public boolean isGameOver(){return gameOver;}
+	public void floodFill(){
+		//TODO:LOGIC
+	}
 
+	public void gameOver(){
+		for(int i =0; i< gridSize; i++){
+			for(int j =0; j<gridSize; j++){
+				tile[i][j].show();
+			}
+		}
+	}
 
 	class Tile extends JButton implements MouseListener{
 		private boolean pressed = false;
-		private boolean isBomb;
+		private boolean bee;
 
 		public Tile(){
 			addMouseListener(this);
 		}
 
-		public boolean isExplode(){return isBomb;}
+		public boolean isBee(){return bee;}
+
+		public void seBeeCount(int i){
+			this.setText(i);
+		}
+
+		public void show(){
+			pressed = true;
+		}
 
 		//Overrides for abstract MouseListener
 		public void mouseExited(MouseEvent me){}
@@ -85,6 +142,4 @@ public class BeeSweeper extends JFrame{
 		public void mousePressed(MouseEvent me){}
 		public void mouseClicked(MouseEvent me){}
 	}
-
 }
-

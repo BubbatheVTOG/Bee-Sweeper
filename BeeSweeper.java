@@ -1,16 +1,7 @@
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-
+import java.awt.*;
 import java.util.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class BeeSweeper extends JFrame{
 
@@ -55,6 +46,20 @@ public class BeeSweeper extends JFrame{
 		add(jpGrid,BorderLayout.CENTER);
 
 		//TODO: ASSIGN BEES
+
+
+		//ACTION LISTENERS
+		jmiNew.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent ae){
+				new BeeSweeper();
+			}
+		});
+
+		jmiQuit.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent ae){
+				System.exit(0);
+				}
+		});
 
 		pack();
 		setLocationRelativeTo(null);

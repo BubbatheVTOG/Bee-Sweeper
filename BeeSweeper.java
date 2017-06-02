@@ -17,6 +17,7 @@ public class BeeSweeper extends JFrame{
 	private int gridSize;
 	private int bombAmount;
 	private JButton[][] tiles;
+	private boolean gameOver=false;
 	private Random rand = new Random();
 
 	public static void main(String[] args){
@@ -27,6 +28,7 @@ public class BeeSweeper extends JFrame{
 		//TODO:
 		//dialog box for difficulty.
 		gridSize=10;
+		bombAmount=10;
 
 		//MenuBar
 		JMenuBar jmb = new JMenuBar();
@@ -61,17 +63,20 @@ public class BeeSweeper extends JFrame{
 		setVisible(true);
 	}
 
+	public void setGameOver(boolean isOver){gameOver=isOver;}
+
+	public boolean isGameOver(){return gameOver;}
+
 
 	class Tile extends JButton implements MouseListener{
 		private boolean pressed = false;
 		private boolean isBomb;
 
-		public Tile(boolean bomb){
-			this.isBomb = bomb;
+		public Tile(){
+			addMouseListener(this);
 		}
 
 		public boolean isExplode(){return isBomb;}
-
 
 		//Overrides for abstract MouseListener
 		public void mouseExited(MouseEvent me){}

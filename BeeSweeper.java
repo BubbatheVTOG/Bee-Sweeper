@@ -36,6 +36,7 @@ public class BeeSweeper extends JFrame{
 		//Center
 		tiles = new Tile[gridSize][gridSize];
 		JPanel jpGrid = new JPanel(new GridLayout(gridSize,gridSize));
+		int counter = 0;
 		for(int i = 0; i<gridSize; i++){
 			for(int j =0; j<gridSize; j++){
 				Tile tile = new Tile();
@@ -43,6 +44,8 @@ public class BeeSweeper extends JFrame{
 				tiles[i][j]=tile;
 				jpGrid.add(tile);
 				//TODO: ASSIGN button ID's
+				tile.putClientProperty("id",Integer.valueOf(counter));
+				counter++;
 			}
 		}
 		add(jpGrid,BorderLayout.CENTER);
@@ -90,8 +93,8 @@ public class BeeSweeper extends JFrame{
 				beeCount++;
 			}
 		}
-		if(x < gridSize){
-			if(tiles[x+1][y].isBee()){
+		if(x < gridSize-1){
+			if(tiles[1][y].isBee()){
 				beeCount++;
 			}
 		}
@@ -100,8 +103,8 @@ public class BeeSweeper extends JFrame{
 				beeCount++;
 			}
 		}
-		if(y < gridSize){
-			if(tiles[y][x+1].isBee()){
+		if(y < gridSize-1){
+			if(tiles[x][y].isBee()){
 				beeCount++;
 			}
 		}
@@ -110,18 +113,18 @@ public class BeeSweeper extends JFrame{
 				beeCount++;
 			}
 		}
-		if( (x < gridSize) && (y < gridSize) ){
-			if(tiles[x+1][y+1].isBee()){
+		if( (x < gridSize-1) && (y < gridSize-1) ){
+			if(tiles[x][y].isBee()){
 				beeCount++;
 			}
 		}
-		if( (x > 0) && (y < gridSize) ){
-			if(tiles[x-1][y+1].isBee()){
+		if( (x > 0) && (y < gridSize-1) ){
+			if(tiles[x-1][y].isBee()){
 				beeCount++;
 			}
 		}
-		if( (x < gridSize) && (y > 0) ){
-			if(tiles[x+1][y-1].isBee()){
+		if( (x < gridSize-1) && (y > 0) ){
+			if(tiles[x][y-1].isBee()){
 				beeCount++;
 			}
 		}

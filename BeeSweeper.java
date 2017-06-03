@@ -1,12 +1,13 @@
 import java.awt.*;
-import java.util.*;
 import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
 
 public class BeeSweeper extends JFrame{
 
 	private int gridSize;
 	private int beeAmount;
+	private int[] beeLocations;
 	private Tile[][] tiles;
 	private Random rand = new Random();
 
@@ -19,6 +20,7 @@ public class BeeSweeper extends JFrame{
 		//dialog box for difficulty.
 		gridSize=10;
 		beeAmount=10;
+		beeLocations = new int[beeAmount];
 
 		//MenuBar
 		JMenuBar jmb = new JMenuBar();
@@ -45,8 +47,8 @@ public class BeeSweeper extends JFrame{
 		}
 		add(jpGrid,BorderLayout.CENTER);
 
-		//TODO: ASSIGN BEES
-
+		//ASSIGN BEES
+		this.assignBees(0,beeAmount);
 
 		//ACTION LISTENERS
 		jmiNew.addActionListener( new ActionListener() {
@@ -65,6 +67,20 @@ public class BeeSweeper extends JFrame{
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+	}
+
+	public void assignBees(int b, int beeAmount){
+		for(; b< beeAmount; b++){
+			int beeLocation = rand.nextInt(gridSize*gridSize);
+			if(!Arrays.asList(beeLocations).contains(beeLocation)){
+				beeLocations[b]=beeLocation;
+				tiles[beeLocation%gridSize][(int)Math.floor(beeLocation/gridSize)].setBee(true);
+			}else{
+				this.assignBees(b,beeAmount-b);
+				break;
+			}
+			System.out.println(""+beeLocation);
+		}
 	}
 
 	public void calcBees(int x, int y){
@@ -119,7 +135,7 @@ public class BeeSweeper extends JFrame{
 	public void gameOver(){
 		for(int i =0; i< gridSize; i++){
 			for(int j =0; j<gridSize; j++){
-				tiles[i][j].hasBeenPressed();
+				tiles[i][j].hasBeenPressed(true);
 			}
 		}
 	}
@@ -138,8 +154,29 @@ public class BeeSweeper extends JFrame{
 			this.setText(""+i);
 		}
 
-		public void hasBeenPressed(){
-			pressed = true;
+		public void hasBeenPressed(boolean pressed){
+			this.pressed = pressed;
+		}
+
+		public void setBee(boolean isBee){
+			this.bee = isBee;
+		}
+
+		public void mouseClicked(MouseEvent me){
+			Object button = me.getSource();
+			for(int i =0; i< gridSize; i++){
+				for(int j =0; j<gridSize; j++){
+					if(button == this){
+						this.hasBeenPressed(true);
+						if(this.isBee()==true){
+							BeeSweeper.this.gameOver();
+						}else{
+							this.hasBeenPressed(true);
+							BeeSweeper.this.calcBees(i,j);
+						}
+					}
+				}
+			}
 		}
 
 		//Overrides for abstract MouseListener
@@ -147,6 +184,5 @@ public class BeeSweeper extends JFrame{
 		public void mouseEntered(MouseEvent me){}
 		public void mouseReleased(MouseEvent me){}
 		public void mousePressed(MouseEvent me){}
-		public void mouseClicked(MouseEvent me){}
 	}
 }

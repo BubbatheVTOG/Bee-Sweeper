@@ -143,12 +143,12 @@ public class BeeSweeper extends JFrame{
 		}
 	}
 
-	class Tile extends JButton implements MouseListener{
+	class Tile extends JButton implements ActionListener{
 		private boolean pressed = false;
 		private boolean bee = false;
 
 		public Tile(){
-			addMouseListener(this);
+			addActionListener(this);
 		}
 
 		public boolean isBee(){return bee;}
@@ -165,11 +165,13 @@ public class BeeSweeper extends JFrame{
 			this.bee = isBee;
 		}
 
-		public void mouseClicked(MouseEvent me){
-			Object button = me.getSource();
+		public void actionPerformed(ActionEvent ae){
+			JButton button = (JButton)ae.getSource();
+			Integer buttonVal = button.getClientPropery("id");
+			/*
 			for(int i =0; i< gridSize; i++){
 				for(int j =0; j<gridSize; j++){
-					if(button == this){
+					if(buttonVal == ){
 						this.hasBeenPressed(true);
 						if(this.isBee()==true){
 							BeeSweeper.this.gameOver();
@@ -180,12 +182,8 @@ public class BeeSweeper extends JFrame{
 					}
 				}
 			}
+			*/
+			System.out.println(""+buttonVal.toString());
 		}
-
-		//Overrides for abstract MouseListener
-		public void mouseExited(MouseEvent me){}
-		public void mouseEntered(MouseEvent me){}
-		public void mouseReleased(MouseEvent me){}
-		public void mousePressed(MouseEvent me){}
 	}
 }

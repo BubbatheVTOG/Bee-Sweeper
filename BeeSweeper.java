@@ -44,6 +44,7 @@ public class BeeSweeper extends JFrame{
 				tiles[i][j]=tile;
 				jpGrid.add(tile);
 				//TODO: ASSIGN button ID's
+				tile.addActionListener(new TileListener(tile));
 				tile.putClientProperty("id",Integer.valueOf(counter));
 				counter++;
 			}
@@ -143,47 +144,52 @@ public class BeeSweeper extends JFrame{
 		}
 	}
 
-	class Tile extends JButton implements ActionListener{
-		private boolean pressed = false;
-		private boolean bee = false;
+	class TileListener implements ActionListener{
+		JButton tile;
 
-		public Tile(){
-			addActionListener(this);
-		}
-
-		public boolean isBee(){return bee;}
-
-		public void setBeeCount(int i){
-			this.setText(""+i);
-		}
-
-		public void hasBeenPressed(boolean pressed){
-			this.pressed = pressed;
-		}
-
-		public void setBee(boolean isBee){
-			this.bee = isBee;
+		public TileListener(JButton tile){
+			this.tile = tile;
 		}
 
 		public void actionPerformed(ActionEvent ae){
-			JButton button = (JButton)ae.getSource();
-			Integer buttonVal = button.getClientPropery("id");
-			/*
+			Tile tile = (Tile)ae.getSource();
+			int counter = 0;
 			for(int i =0; i< gridSize; i++){
 				for(int j =0; j<gridSize; j++){
-					if(buttonVal == ){
-						this.hasBeenPressed(true);
-						if(this.isBee()==true){
+					if(tile.getTileId() == counter){
+						tile.hasBeenPressed(true);
+						if(tile.isBee()==true){
 							BeeSweeper.this.gameOver();
 						}else{
-							this.hasBeenPressed(true);
+							tile.hasBeenPressed(true);
 							BeeSweeper.this.calcBees(i,j);
 						}
 					}
 				}
 			}
-			*/
-			System.out.println(""+buttonVal.toString());
 		}
+	}
+
+	class Tile extends JButton{
+		private boolean isBee;
+		private boolean beenPressed;
+		private int beeCount;
+		private int id;
+
+		public void setBee(boolean isBee){
+			this.isBee = isBee;
+		}
+
+		public boolean isBee(){return isBee;}
+
+		public void hasBeenPressed(boolean beenPressed){
+			this.beenPressed = beenPressed;
+		}
+
+		public void setBeeCount(int beeCount){this.beeCount = beeCount;}
+
+		public void setTileId(int id){this.id = id;}
+
+		public int getTileId(){return id;}
 	}
 }

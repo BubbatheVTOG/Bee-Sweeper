@@ -53,6 +53,13 @@ public class BeeSweeper extends JFrame{
 		//ASSIGN BEES
 		this.assignBees(0,beeAmount);
 
+		//ASSIGN BEE COUNT
+		for( int i = 0; i<gridSize-1; i++){
+			for( int j = 0; j<gridSize-1; j++){
+				tiles[i][j].setBeeCount(this.calcBees(i,j));
+			}
+		}
+
 		//ACTION LISTENERS
 		jmiNew.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent ae){
@@ -77,7 +84,8 @@ public class BeeSweeper extends JFrame{
 			int beeLocation = rand.nextInt(gridSize*gridSize);
 			if(!Arrays.asList(beeLocations).contains(beeLocation)){
 				beeLocations[b]=beeLocation;
-				tiles[beeLocation%gridSize][(int)Math.floor(beeLocation/gridSize)].setBee(true);
+				//tiles[beeLocation%gridSize][(int)Math.floor(beeLocation/gridSize)].setBee(true);
+				tiles[(int)Math.floor(beeLocation/gridSize)][beeLocation%gridSize].setBee(true);
 			}else{
 				this.assignBees(b,beeAmount-b);
 				break;
@@ -141,6 +149,7 @@ public class BeeSweeper extends JFrame{
 				tiles[i][j].hasBeenPressed(true);
 			}
 		}
+		JOptionPane.showMessageDialog(null,"You Lose","You Lose",JOptionPane.ERROR_MESSAGE);
 	}
 
 	class TileListener implements ActionListener{
@@ -158,8 +167,7 @@ public class BeeSweeper extends JFrame{
 					if(tile.getTileId() == counter){
 						System.out.println("Tile ID: "+tile.getTileId());
 						System.out.println("Counter: "+counter);
-						tile.hasBeenPressed(true);
-						if(tile.isBee()==true){
+						if(tile.isBee()){
 							BeeSweeper.this.gameOver();
 						}else{
 							tile.hasBeenPressed(true);
@@ -177,7 +185,7 @@ public class BeeSweeper extends JFrame{
 
 	class Tile extends JButton{
 		private boolean isBee;
-		private boolean beenPressed;
+		private boolean beenPressed=false;
 		private int beeCount;
 		private int id;
 

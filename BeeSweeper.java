@@ -39,13 +39,12 @@ public class BeeSweeper extends JFrame{
 		int counter = 0;
 		for(int i = 0; i<gridSize; i++){
 			for(int j =0; j<gridSize; j++){
-				Tile tile = new Tile();
+				Tile tile = new Tile(counter);
 				tile.setPreferredSize(new Dimension(64,64));
 				tiles[i][j]=tile;
 				jpGrid.add(tile);
 				//TODO: ASSIGN button ID's
 				tile.addActionListener(new TileListener(tile));
-				tile.putClientProperty("id",Integer.valueOf(counter));
 				counter++;
 			}
 		}
@@ -87,7 +86,7 @@ public class BeeSweeper extends JFrame{
 		}
 	}
 
-	public void calcBees(int x, int y){
+	public int calcBees(int x, int y){
 		int beeCount=0;
 		if(x > 0 ){
 			if(tiles[x-1][y].isBee()){
@@ -129,7 +128,7 @@ public class BeeSweeper extends JFrame{
 				beeCount++;
 			}
 		}
-		tiles[x][y].setBeeCount(beeCount);
+		return beeCount;
 	}
 
 	public void floodFill(){
@@ -145,9 +144,9 @@ public class BeeSweeper extends JFrame{
 	}
 
 	class TileListener implements ActionListener{
-		JButton tile;
+		Tile tile;
 
-		public TileListener(JButton tile){
+		public TileListener(Tile tile){
 			this.tile = tile;
 		}
 
@@ -157,14 +156,20 @@ public class BeeSweeper extends JFrame{
 			for(int i =0; i< gridSize; i++){
 				for(int j =0; j<gridSize; j++){
 					if(tile.getTileId() == counter){
+						System.out.println("Tile ID: "+tile.getTileId());
+						System.out.println("Counter: "+counter);
 						tile.hasBeenPressed(true);
 						if(tile.isBee()==true){
 							BeeSweeper.this.gameOver();
 						}else{
 							tile.hasBeenPressed(true);
 							BeeSweeper.this.calcBees(i,j);
+							if(!tile.isPressed()){
+								tile.setText(""+tile.getBeeCount());
+							}
 						}
 					}
+					counter++;
 				}
 			}
 		}
@@ -176,6 +181,10 @@ public class BeeSweeper extends JFrame{
 		private int beeCount;
 		private int id;
 
+		public Tile(int id){
+			this.id = id;
+		}
+
 		public void setBee(boolean isBee){
 			this.isBee = isBee;
 		}
@@ -186,9 +195,15 @@ public class BeeSweeper extends JFrame{
 			this.beenPressed = beenPressed;
 		}
 
-		public void setBeeCount(int beeCount){this.beeCount = beeCount;}
+		public boolean isPressed(){return beenPressed;}
 
 		public void setTileId(int id){this.id = id;}
+
+		public void setBeeCount(int beeCount){
+			this.beeCount = beeCount;
+		}
+
+		public int getBeeCount(){return beeCount;}
 
 		public int getTileId(){return id;}
 	}

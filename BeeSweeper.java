@@ -54,9 +54,10 @@ public class BeeSweeper extends JFrame{
 		this.assignBees(0,beeAmount);
 
 		//ASSIGN BEE COUNT
-		for( int i = 0; i<gridSize-1; i++){
-			for( int j = 0; j<gridSize-1; j++){
-				tiles[i][j].setBeeCount(this.calcBees(i,j));
+		for( int i = 0; i<gridSize; i++){
+			for( int j = 0; j<gridSize; j++){
+				Tile tile = tiles[i][j];
+				tile.setBeeCount(this.calcBees(i,j));
 			}
 		}
 
@@ -84,8 +85,7 @@ public class BeeSweeper extends JFrame{
 			int beeLocation = rand.nextInt(gridSize*gridSize);
 			if(!Arrays.asList(beeLocations).contains(beeLocation)){
 				beeLocations[b]=beeLocation;
-				//tiles[beeLocation%gridSize][(int)Math.floor(beeLocation/gridSize)].setBee(true);
-				tiles[(int)Math.floor(beeLocation/gridSize)][beeLocation%gridSize].setBee(true);
+				tiles[((int)Math.floor(beeLocation/gridSize))][(beeLocation%gridSize)].setBee(true);
 			}else{
 				this.assignBees(b,beeAmount-b);
 				break;
@@ -146,7 +146,12 @@ public class BeeSweeper extends JFrame{
 	public void gameOver(){
 		for(int i =0; i< gridSize; i++){
 			for(int j =0; j<gridSize; j++){
-				tiles[i][j].hasBeenPressed(true);
+				Tile tile = tiles[i][j];
+				if(tile.isBee()){
+					tile.setText("BEE!");
+				}else{
+					tile.setText(""+tile.getBeeCount());
+				}
 			}
 		}
 		JOptionPane.showMessageDialog(null,"You Lose","You Lose",JOptionPane.ERROR_MESSAGE);
@@ -161,24 +166,11 @@ public class BeeSweeper extends JFrame{
 
 		public void actionPerformed(ActionEvent ae){
 			Tile tile = (Tile)ae.getSource();
-			int counter = 0;
-			for(int i =0; i< gridSize; i++){
-				for(int j =0; j<gridSize; j++){
-					if(tile.getTileId() == counter){
-						System.out.println("Tile ID: "+tile.getTileId());
-						System.out.println("Counter: "+counter);
-						if(tile.isBee()){
-							BeeSweeper.this.gameOver();
-						}else{
-							tile.hasBeenPressed(true);
-							BeeSweeper.this.calcBees(i,j);
-							if(!tile.isPressed()){
-								tile.setText(""+tile.getBeeCount());
-							}
-						}
-					}
-					counter++;
-				}
+			if(tile.isBee()){
+				BeeSweeper.this.gameOver();
+				tile.setText("BEE!");
+			}else{
+				tile.setText(""+tile.getBeeCount());
 			}
 		}
 	}

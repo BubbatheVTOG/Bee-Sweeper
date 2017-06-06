@@ -94,45 +94,53 @@ public class BeeSweeper extends JFrame{
 		}
 	}
 
-	public int calcBees(int x, int y){
+	public int calcBees(int y, int x){
 		int beeCount=0;
+		//LEFT
 		if(x > 0 ){
-			if(tiles[x-1][y].isBee()){
+			if(tiles[y][x-1].isBee()){
 				beeCount++;
 			}
 		}
+		//RIGHT
 		if(x < gridSize-1){
-			if(tiles[1][y].isBee()){
+			if(tiles[y][x+1].isBee()){
 				beeCount++;
 			}
 		}
+		//UP
 		if(y > 0){
-			if(tiles[x][y-1].isBee()){
+			if(tiles[y-1][x].isBee()){
 				beeCount++;
 			}
 		}
+		//BOTTOM
 		if(y < gridSize-1){
-			if(tiles[x][y].isBee()){
+			if(tiles[y+1][x].isBee()){
 				beeCount++;
 			}
 		}
+		//TOP-LEFT
 		if( (x > 0) && (y > 0) ){
-			if(tiles[x-1][y-1].isBee()){
+			if(tiles[y-1][x-1].isBee()){
 				beeCount++;
 			}
 		}
+		//TOP-RIGHT
 		if( (x < gridSize-1) && (y < gridSize-1) ){
-			if(tiles[x][y].isBee()){
+			if(tiles[y+1][x+1].isBee()){
 				beeCount++;
 			}
 		}
+		//BOTTOM-LEFT
 		if( (x > 0) && (y < gridSize-1) ){
-			if(tiles[x-1][y].isBee()){
+			if(tiles[y+1][x-1].isBee()){
 				beeCount++;
 			}
 		}
+		//TOP-RIGHT
 		if( (x < gridSize-1) && (y > 0) ){
-			if(tiles[x][y-1].isBee()){
+			if(tiles[y-1][x+1].isBee()){
 				beeCount++;
 			}
 		}

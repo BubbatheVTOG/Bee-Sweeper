@@ -151,7 +151,7 @@ public class BeeSweeper extends JFrame{
 		//LEFT
 		if(x > 0 ){
 			Tile tile = tiles[y][x-1];
-			if(!tile.isBee()){
+			if(!tile.isBee() && !tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
@@ -163,7 +163,7 @@ public class BeeSweeper extends JFrame{
 		//RIGHT
 		if(x < gridSize-1){
 			Tile tile = tiles[y][x+1];
-			if(!tile.isBee()){
+			if(!tile.isBee() && !tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
@@ -175,7 +175,7 @@ public class BeeSweeper extends JFrame{
 		//UP
 		if(y > 0){
 			Tile tile = tiles[y-1][x];
-			if(!tile.isBee()){
+			if(!tile.isBee() && !tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
@@ -187,7 +187,7 @@ public class BeeSweeper extends JFrame{
 		//BOTTOM
 		if(y < gridSize-1){
 			Tile tile = tiles[y+1][x];
-			if(!tile.isBee()){
+			if(!tile.isBee() && !tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
@@ -199,7 +199,7 @@ public class BeeSweeper extends JFrame{
 		//TOP-LEFT
 		if( (x > 0) && (y > 0) ){
 			Tile tile = tiles[y-1][x-1];
-			if(!tile.isBee()){
+			if(!tile.isBee() && !tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
@@ -211,7 +211,7 @@ public class BeeSweeper extends JFrame{
 		//TOP-RIGHT
 		if( (x < gridSize-1) && (y < gridSize-1) ){
 			Tile tile = tiles[y+1][x+1];
-			if(!tile.isBee()){
+			if(!tile.isBee() && !tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
@@ -223,7 +223,7 @@ public class BeeSweeper extends JFrame{
 		//BOTTOM-LEFT
 		if( (x > 0) && (y < gridSize-1) ){
 			Tile tile = tiles[y+1][x-1];
-			if(!tile.isBee()){
+			if(!tile.isBee() && !tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
@@ -235,7 +235,7 @@ public class BeeSweeper extends JFrame{
 		//TOP-RIGHT
 		if( (x < gridSize-1) && (y > 0) ){
 			Tile tile = tiles[y-1][x+1];
-			if(!tile.isBee()){
+			if(!tile.isBee() && !tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
@@ -254,9 +254,6 @@ public class BeeSweeper extends JFrame{
 					tile.setText("BEE!");
 				}else{
 					tile.setText(""+tile.getBeeCount());
-					if(tile.getBeeCount()==0){
-						BeeSweeper.this.floodFill(i,j);
-					}
 				}
 			}
 		}

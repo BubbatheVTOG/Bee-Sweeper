@@ -71,7 +71,7 @@ public class BeeSweeper extends JFrame{
 		jmiQuit.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent ae){
 				System.exit(0);
-				}
+			}
 		});
 
 		pack();
@@ -151,96 +151,192 @@ public class BeeSweeper extends JFrame{
 		//LEFT
 		if(x > 0 ){
 			Tile tile = tiles[y][x-1];
-			if(!tile.isBee() && !tile.isPressed()){
+			if(!tile.isBee() && tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
-					this.floodFill(tile.getTileY(),
-							tile.getTileX());
+					Thread t = new Thread(){
+						public void run(){
+							BeeSweeper.this.floodFill(tile.getTileY(),
+									tile.getTileX());
+						}
+					};
+					t.start();
+					try{
+						t.join();
+					}catch(InterruptedException ie){
+						System.out.println("CRIT: Got Interrupted at BeeSweeper.floodFill()");
+					}catch(Exception e){
+						System.out.println("CRIT: Unknown error at BeeSweeper.floodFill()\n"+e.getMessage());
+					}
 				}
 			}
 		}
 		//RIGHT
 		if(x < gridSize-1){
 			Tile tile = tiles[y][x+1];
-			if(!tile.isBee() && !tile.isPressed()){
+			if(!tile.isBee() && tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
-					this.floodFill(tile.getTileY(),
-							tile.getTileX());
+					Thread t = new Thread(){
+						public void run(){
+							BeeSweeper.this.floodFill(tile.getTileY(),
+									tile.getTileX());
+						}
+					};
+					t.start();
+					try{
+						t.join();
+					}catch(InterruptedException ie){
+						System.out.println("CRIT: Got Interrupted at BeeSweeper.floodFill()");
+					}catch(Exception e){
+						System.out.println("CRIT: Unknown error at BeeSweeper.floodFill()\n"+e.getMessage());
+					}
 				}
 			}
 		}
 		//UP
 		if(y > 0){
 			Tile tile = tiles[y-1][x];
-			if(!tile.isBee() && !tile.isPressed()){
+			if(!tile.isBee() && tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
-					this.floodFill(tile.getTileY(),
-							tile.getTileX());
+					Thread t = new Thread(){
+						public void run(){
+							BeeSweeper.this.floodFill(tile.getTileY(),
+									tile.getTileX());
+						}
+					};
+					t.start();
+					try{
+						t.join();
+					}catch(InterruptedException ie){
+						System.out.println("CRIT: Got Interrupted at BeeSweeper.floodFill()");
+					}catch(Exception e){
+						System.out.println("CRIT: Unknown error at BeeSweeper.floodFill()\n"+e.getMessage());
+					}
 				}
 			}
 		}
 		//BOTTOM
 		if(y < gridSize-1){
 			Tile tile = tiles[y+1][x];
-			if(!tile.isBee() && !tile.isPressed()){
+			if(!tile.isBee() && tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
-					this.floodFill(tile.getTileY(),
-							tile.getTileX());
+					Thread t = new Thread(){
+						public void run(){
+							BeeSweeper.this.floodFill(tile.getTileY(),
+									tile.getTileX());
+						}
+					};
+					t.start();
+					try{
+						t.join();
+					}catch(InterruptedException ie){
+						System.out.println("CRIT: Got Interrupted at BeeSweeper.floodFill()");
+					}catch(Exception e){
+						System.out.println("CRIT: Unknown error at BeeSweeper.floodFill()\n"+e.getMessage());
+					}
 				}
 			}
 		}
 		//TOP-LEFT
 		if( (x > 0) && (y > 0) ){
 			Tile tile = tiles[y-1][x-1];
-			if(!tile.isBee() && !tile.isPressed()){
+			if(!tile.isBee() && tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
-					this.floodFill(tile.getTileY(),
-							tile.getTileX());
+					Thread t = new Thread(){
+						public void run(){
+							BeeSweeper.this.floodFill(tile.getTileY(),
+									tile.getTileX());
+						}
+					};
+					t.start();
+					try{
+						t.join();
+					}catch(InterruptedException ie){
+						System.out.println("CRIT: Got Interrupted at BeeSweeper.floodFill()");
+					}catch(Exception e){
+						System.out.println("CRIT: Unknown error at BeeSweeper.floodFill()\n"+e.getMessage());
+					}
 				}
 			}
 		}
 		//TOP-RIGHT
 		if( (x < gridSize-1) && (y < gridSize-1) ){
 			Tile tile = tiles[y+1][x+1];
-			if(!tile.isBee() && !tile.isPressed()){
+			if(!tile.isBee() && tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
-					this.floodFill(tile.getTileY(),
-							tile.getTileX());
+					Thread t = new Thread(){
+						public void run(){
+							BeeSweeper.this.floodFill(tile.getTileY(),
+									tile.getTileX());
+						}
+					};
+					t.start();
+					try{
+						t.join();
+					}catch(InterruptedException ie){
+						System.out.println("CRIT: Got Interrupted at BeeSweeper.floodFill()");
+					}catch(Exception e){
+						System.out.println("CRIT: Unknown error at BeeSweeper.floodFill()\n"+e.getMessage());
+					}
 				}
 			}
 		}
 		//BOTTOM-LEFT
 		if( (x > 0) && (y < gridSize-1) ){
 			Tile tile = tiles[y+1][x-1];
-			if(!tile.isBee() && !tile.isPressed()){
+			if(!tile.isBee() && tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
-					this.floodFill(tile.getTileY(),
-							tile.getTileX());
+					Thread t = new Thread(){
+						public void run(){
+							BeeSweeper.this.floodFill(tile.getTileY(),
+									tile.getTileX());
+						}
+					};
+					t.start();
+					try{
+						t.join();
+					}catch(InterruptedException ie){
+						System.out.println("CRIT: Got Interrupted at BeeSweeper.floodFill()");
+					}catch(Exception e){
+						System.out.println("CRIT: Unknown error at BeeSweeper.floodFill()\n"+e.getMessage());
+					}
 				}
 			}
 		}
 		//TOP-RIGHT
 		if( (x < gridSize-1) && (y > 0) ){
 			Tile tile = tiles[y-1][x+1];
-			if(!tile.isBee() && !tile.isPressed()){
+			if(!tile.isBee() && tile.isPressed()){
 				tile.hasBeenPressed(true);
 				tile.setBeeCount(tile.getBeeCount());
 				if(tile.getBeeCount()==0){
-					this.floodFill(tile.getTileY(),
-							tile.getTileX());
+					Thread t = new Thread(){
+						public void run(){
+							BeeSweeper.this.floodFill(tile.getTileY(),
+									tile.getTileX());
+						}
+					};
+					t.start();
+					try{
+						t.join();
+					}catch(InterruptedException ie){
+						System.out.println("CRIT: Got Interrupted at BeeSweeper.floodFill()");
+					}catch(Exception e){
+						System.out.println("CRIT: Unknown error at BeeSweeper.floodFill()\n"+e.getMessage());
+					}
 				}
 			}
 		}
@@ -271,9 +367,13 @@ public class BeeSweeper extends JFrame{
 			Tile tile = (Tile)ae.getSource();
 			if(tile.isBee()){
 				BeeSweeper.this.gameOver();
-				tile.setText("BEE!");
 			}else{
+				tile.hasBeenPressed(true);
 				tile.setText(""+tile.getBeeCount());
+				if(tile.getBeeCount() == 0)i{
+					BeeSweeper.this.floodFill(tile.getTileY(),
+							tile.getTileX());
+				}
 			}
 		}
 	}

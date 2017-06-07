@@ -147,29 +147,32 @@ public class BeeSweeper extends JFrame{
 		return beeCount;
 	}
 
-	public void floodFill(int y, int x){
-		//LEFT
+	public void floodFill(Tile tile){
+		int x = tile.getTileX();
+		int y = tile.getTileY();
+		//LEFT x-1
 		if(x > 0 ){
+
 		}
-		//RIGHT
+		//RIGHT x+1
 		if(x < gridSize-1){
 		}
-		//UP
+		//UP y-1
 		if(y > 0){
 		}
-		//BOTTOM
+		//BOTTOM y+1
 		if(y < gridSize-1){
 		}
-		//TOP-LEFT
+		//TOP-LEFT y-1 x-1
 		if( (x > 0) && (y > 0) ){
 		}
-		//TOP-RIGHT
+		//TOP-RIGHT y+1 x+1
 		if( (x < gridSize-1) && (y < gridSize-1) ){
 		}
-		//BOTTOM-LEFT
+		//BOTTOM-LEFT y+1 x-1
 		if( (x > 0) && (y < gridSize-1) ){
 		}
-		//TOP-RIGHT
+		//TOP-RIGHT y-1 x+1
 		if( (x < gridSize-1) && (y > 0) ){
 		}
 	}
@@ -203,8 +206,7 @@ public class BeeSweeper extends JFrame{
 				tile.hasBeenPressed(true);
 				tile.setText(""+tile.getBeeCount());
 				if(tile.getBeeCount() == 0)i{
-					BeeSweeper.this.floodFill(tile.getTileY(),
-							tile.getTileX());
+					BeeSweeper.this.floodFill(tile);
 				}
 			}
 		}

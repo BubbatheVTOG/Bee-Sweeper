@@ -152,7 +152,6 @@ public class BeeSweeper extends JFrame{
 		int y = tile.getTileY();
 		//LEFT x-1
 		if(x > 0 ){
-
 		}
 		//RIGHT x+1
 		if(x < gridSize-1){
@@ -182,9 +181,23 @@ public class BeeSweeper extends JFrame{
 			for(int j =0; j<gridSize; j++){
 				Tile tile = tiles[i][j];
 				if(tile.isBee()){
-					tile.setText("BEE!");
+					JLabel beeCountLabel = new JLabel();
+					beeCountLabel.setText("BEE!");
+					beeCountLabel.setHorizontalAlignment(JLabel.CENTER);
+					beeCountLabel.setHorizontalTextPosition(JLabel.CENTER);
+					beeCountLabel.setVerticalAlignment(JLabel.CENTER);
+					beeCountLabel.setVerticalTextPosition(JLabel.CENTER);
+					beeCountLabel.setForeground(Color.WHITE);
+					tile.add(beeCountLabel);
 				}else{
-					tile.setText(""+tile.getBeeCount());
+					JLabel beeCountLabel = new JLabel();
+					beeCountLabel.setText(""+tile.getBeeCount());
+					beeCountLabel.setHorizontalAlignment(JLabel.CENTER);
+					beeCountLabel.setHorizontalTextPosition(JLabel.CENTER);
+					beeCountLabel.setVerticalAlignment(JLabel.CENTER);
+					beeCountLabel.setVerticalTextPosition(JLabel.CENTER);
+					beeCountLabel.setForeground(Color.WHITE);
+					tile.add(beeCountLabel);
 				}
 			}
 		}
@@ -203,12 +216,20 @@ public class BeeSweeper extends JFrame{
 			if(tile.isBee()){
 				BeeSweeper.this.gameOver();
 			}else{
-				tile.hasBeenPressed(true);
-				tile.setText(""+tile.getBeeCount());
-				if(tile.getBeeCount() == 0)i{
+				JLabel beeCountLabel = new JLabel();
+				beeCountLabel.setText(""+tile.getBeeCount());
+				beeCountLabel.setHorizontalAlignment(JLabel.CENTER);
+				beeCountLabel.setHorizontalTextPosition(JLabel.CENTER);
+				beeCountLabel.setVerticalAlignment(JLabel.CENTER);
+				beeCountLabel.setVerticalTextPosition(JLabel.CENTER);
+				beeCountLabel.setForeground(Color.WHITE);
+				tile.add(beeCountLabel);
+				if(tile.getBeeCount() == 0){
 					BeeSweeper.this.floodFill(tile);
 				}
 			}
+			tile.setBackground(Color.DARK_GRAY);
+			tile.removeActionListener(this);
 		}
 	}
 
@@ -222,6 +243,8 @@ public class BeeSweeper extends JFrame{
 		public Tile(int y, int x){
 			this.y = y;
 			this.x = x;
+			super.setBackground(Color.LIGHT_GRAY);
+			super.setFocusPainted(false);
 		}
 
 		public void setBee(boolean isBee){

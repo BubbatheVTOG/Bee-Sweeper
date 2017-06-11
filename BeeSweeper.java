@@ -181,23 +181,9 @@ public class BeeSweeper extends JFrame{
 			for(int j =0; j<gridSize; j++){
 				Tile tile = tiles[i][j];
 				if(tile.isBee()){
-					JLabel beeCountLabel = new JLabel();
-					beeCountLabel.setText("BEE!");
-					beeCountLabel.setHorizontalAlignment(JLabel.CENTER);
-					beeCountLabel.setHorizontalTextPosition(JLabel.CENTER);
-					beeCountLabel.setVerticalAlignment(JLabel.CENTER);
-					beeCountLabel.setVerticalTextPosition(JLabel.CENTER);
-					beeCountLabel.setForeground(Color.WHITE);
-					tile.add(beeCountLabel);
+					tile.setText("BEE!");
 				}else{
-					JLabel beeCountLabel = new JLabel();
-					beeCountLabel.setText(""+tile.getBeeCount());
-					beeCountLabel.setHorizontalAlignment(JLabel.CENTER);
-					beeCountLabel.setHorizontalTextPosition(JLabel.CENTER);
-					beeCountLabel.setVerticalAlignment(JLabel.CENTER);
-					beeCountLabel.setVerticalTextPosition(JLabel.CENTER);
-					beeCountLabel.setForeground(Color.WHITE);
-					tile.add(beeCountLabel);
+					tile.setText(""+tile.getBeeCount());
 				}
 			}
 		}
@@ -216,19 +202,12 @@ public class BeeSweeper extends JFrame{
 			if(tile.isBee()){
 				BeeSweeper.this.gameOver();
 			}else{
-				JLabel beeCountLabel = new JLabel();
-				beeCountLabel.setText(""+tile.getBeeCount());
-				beeCountLabel.setHorizontalAlignment(JLabel.CENTER);
-				beeCountLabel.setHorizontalTextPosition(JLabel.CENTER);
-				beeCountLabel.setVerticalAlignment(JLabel.CENTER);
-				beeCountLabel.setVerticalTextPosition(JLabel.CENTER);
-				beeCountLabel.setForeground(Color.WHITE);
-				tile.add(beeCountLabel);
+				tile.setBackground(Color.DARK_GRAY);
+				tile.setText(""+tile.getBeeCount());
 				if(tile.getBeeCount() == 0){
 					BeeSweeper.this.floodFill(tile);
 				}
 			}
-			tile.setBackground(Color.DARK_GRAY);
 			tile.removeActionListener(this);
 		}
 	}
@@ -244,6 +223,7 @@ public class BeeSweeper extends JFrame{
 			this.y = y;
 			this.x = x;
 			super.setBackground(Color.LIGHT_GRAY);
+			super.setForeground(Color.WHITE);
 			super.setFocusPainted(false);
 		}
 

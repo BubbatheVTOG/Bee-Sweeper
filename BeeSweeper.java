@@ -220,15 +220,23 @@ public class BeeSweeper extends JFrame{
 			}
 		}
 		JOptionPane.showMessageDialog(null,"You Lose","You Lose",JOptionPane.ERROR_MESSAGE);
+		BeeSweeper.this.dispose();
 		new BeeSweeper();
 	}
 
 	//TODO:
 	//Finish win condition
 	public void winGame(){
+		boolean won = false;
 		for(int i =0; i< gridSize; i++){
 			for(int j =0; j<gridSize; j++){
-				Tile tile = tiles[i][j];
+				if(!tiles[i][j].isPressed() && !tiles[i][j].isBee()){
+					return;
+				}else{
+					JOptionPane.showMessageDialog(null,"You WIN!","You WIN!",JOptionPane.ERROR_MESSAGE);
+					BeeSweeper.this.dispose();
+					new BeeSweeper();
+				}
 			}
 		}
 	}
@@ -248,6 +256,7 @@ public class BeeSweeper extends JFrame{
 
 		public void mouseClicked(MouseEvent me){
 			Tile tile = (Tile)me.getSource();
+			//System.out.println(me.toString());
 			if(MouseEvent.BUTTON1 == me.getButton()){
 				if(tile.isBee()){
 					BeeSweeper.this.gameOver();
@@ -257,6 +266,7 @@ public class BeeSweeper extends JFrame{
 						BeeSweeper.this.floodFill(tile);
 					}
 					tile.hasBeenPressed(true);
+					BeeSweeper.this.winGame();
 				}
 			}
 			if(MouseEvent.BUTTON3 == me.getButton()){
@@ -281,7 +291,7 @@ public class BeeSweeper extends JFrame{
 		public Tile(int x, int y){
 			this.y = y;
 			this.x = x;
-			super.setBackground(Color.LIGHT_GRAY);
+			super.setBackground(Color.GRAY);
 			super.setForeground(Color.WHITE);
 			super.setFocusPainted(false);
 		}
@@ -303,7 +313,7 @@ public class BeeSweeper extends JFrame{
 					super.setText(String.valueOf(this.getBeeCount()));
 				}
 			}else{
-				super.setBackground(Color.LIGHT_GRAY);
+				super.setBackground(Color.GRAY);
 				super.setText("");
 				this.beenPressed = beenPressed;
 			}
@@ -314,12 +324,12 @@ public class BeeSweeper extends JFrame{
 		public void flippedFlagged(){
 			if(!this.isFlagged){
 				isFlagged = true;
-				super.setText(flagSymbol);
+				this.setText(flagSymbol);
 				BeeSweeper.this.decBeeCounter();
 			}
-			if(this.isFlagged){
+			if(this.isFlagged && !this.beenPressed){
 				isFlagged = false;
-				super.setText("");
+				this.setText("");
 			}
 		}
 

@@ -13,8 +13,10 @@ public class BeeSweeper extends JFrame{
 	private int gridSize = 10;
 	private int beeAmount = 10;
 	private int buttonSize = 64;
-	private String beeSymbol = "\uD83D\uDC1D";
-	private String flagSymbol = "\u2713";
+	private int beeCounter;
+	private int tileCounter;
+	private static final String beeSymbol = "\uD83D\uDC1D";
+	private static final String flagSymbol = "\u2713";
 
 	private int[] beeLocations;
 	private Tile[][] tiles;
@@ -29,8 +31,8 @@ public class BeeSweeper extends JFrame{
 		//TODO:
 		//dialog box for difficulty.
 		beeLocations = new int[beeAmount];
-		int beeCounter = beeAmount;
-		int tileCounter = gridSize*gridSize;
+		beeCounter = beeAmount;
+		tileCounter = gridSize*gridSize;
 
 		//MenuBar
 		JMenuBar jmb = new JMenuBar();
@@ -44,10 +46,10 @@ public class BeeSweeper extends JFrame{
 		setJMenuBar(jmb);
 
 		//NORTH
-		JPanel jpNorth = new JPanel();
-			beeCounterLabel = new JLabel(beeSymbol+": "+beeCounter);
+		JPanel jpNorth = new JPanel( new FlowLayout());
+			beeCounterLabel = new JLabel(beeSymbol+": "+String.valueOf(beeCounter));
 				beeCounterLabel.setHorizontalAlignment(SwingConstants.LEFT);
-			tileCounterLabel = new JLabel("\u2713"+": "+tileCounter);
+			tileCounterLabel = new JLabel("\u2713"+": "+String.valueOf(tileCounter));
 				tileCounterLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 			jpNorth.add(beeCounterLabel);
 			jpNorth.add(tileCounterLabel);
@@ -118,6 +120,10 @@ public class BeeSweeper extends JFrame{
 
 	public void printGrid(){
 		for( int i = 0; i<gridSize; i++){
+			System.out.print("--");
+		}
+		System.out.println();
+		for( int i = 0; i<gridSize; i++){
 			for( int j = 0; j<gridSize; j++){
 				Tile tile = tiles[i][j];
 				if(tile.isBee()){
@@ -128,6 +134,10 @@ public class BeeSweeper extends JFrame{
 			}
 			System.out.println();
 		}
+		for( int i = 0; i<gridSize; i++){
+			System.out.print("--");
+		}
+		System.out.println();
 	}
 
 
@@ -210,8 +220,11 @@ public class BeeSweeper extends JFrame{
 			}
 		}
 		JOptionPane.showMessageDialog(null,"You Lose","You Lose",JOptionPane.ERROR_MESSAGE);
+		new BeeSweeper();
 	}
 
+	//TODO:
+	//Finish win condition
 	public void winGame(){
 		for(int i =0; i< gridSize; i++){
 			for(int j =0; j<gridSize; j++){
@@ -219,6 +232,12 @@ public class BeeSweeper extends JFrame{
 			}
 		}
 	}
+
+	public void decTileCounter(){this.tileCounter--;}
+
+	public void decBeeCounter(){this.beeCounter--;}
+
+	public void incBeeCounter(){this.beeCounter++;}
 
 	class TileListener implements MouseListener{
 		Tile tile;
@@ -229,14 +248,19 @@ public class BeeSweeper extends JFrame{
 
 		public void mouseClicked(MouseEvent me){
 			Tile tile = (Tile)me.getSource();
-			if(tile.isBee()){
-				BeeSweeper.this.gameOver();
-			}else{
-				tile.setText(""+tile.getBeeCount());
-				if(tile.getBeeCount() == 0){
-					BeeSweeper.this.floodFill(tile);
+			if(MouseEvent.BUTTON1 == me.getButton()){
+				if(tile.isBee()){
+					BeeSweeper.this.gameOver();
+				}else{
+					tile.setText(""+tile.getBeeCount());
+					if(tile.getBeeCount() == 0){
+						BeeSweeper.this.floodFill(tile);
+					}
+					tile.hasBeenPressed(true);
 				}
-				tile.hasBeenPressed(true);
+			}
+			if(MouseEvent.BUTTON3 == me.getButton()){
+				tile.flippedFlagged();
 			}
 		}
 
@@ -248,7 +272,8 @@ public class BeeSweeper extends JFrame{
 
 	class Tile extends JButton{
 		private boolean isBee;
-		private boolean beenPressed=false;
+		private boolean isFlagged = false;
+		private boolean beenPressed = false;
 		private int beeCount;
 		private int x;
 		private int y;
@@ -270,11 +295,12 @@ public class BeeSweeper extends JFrame{
 		public void hasBeenPressed(boolean beenPressed){
 			if(beenPressed){
 				this.beenPressed = beenPressed;
+				BeeSweeper.this.decBeeCounter();
 				super.setBackground(Color.DARK_GRAY);
 				if(this.isBee()){
 					super.setText(beeSymbol);
 				}else{
-					super.setText(""+this.getBeeCount());
+					super.setText(String.valueOf(this.getBeeCount()));
 				}
 			}else{
 				super.setBackground(Color.LIGHT_GRAY);
@@ -284,6 +310,18 @@ public class BeeSweeper extends JFrame{
 		}
 
 		public boolean isPressed(){return beenPressed;}
+
+		public void flippedFlagged(){
+			if(!this.isFlagged){
+				isFlagged = true;
+				super.setText(flagSymbol);
+				BeeSweeper.this.decBeeCounter();
+			}
+			if(this.isFlagged){
+				isFlagged = false;
+				super.setText("");
+			}
+		}
 
 		public void setBeeCount(int beeCount){
 			this.beeCount = beeCount;

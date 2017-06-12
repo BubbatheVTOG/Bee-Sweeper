@@ -5,8 +5,9 @@ import javax.swing.*;
 
 public class BeeSweeper extends JFrame{
 
-	private int gridSize;
-	private int beeAmount;
+	private int gridSize = 10;
+	private int beeAmount = 10;
+	private int buttonSize = 50;
 	private int[] beeLocations;
 	private Tile[][] tiles;
 	private Random rand = new Random();
@@ -18,8 +19,6 @@ public class BeeSweeper extends JFrame{
 	public BeeSweeper(){
 		//TODO:
 		//dialog box for difficulty.
-		gridSize=10;
-		beeAmount=10;
 		beeLocations = new int[beeAmount];
 
 		//MenuBar
@@ -40,7 +39,7 @@ public class BeeSweeper extends JFrame{
 		for(int i = 0; i<gridSize; i++){
 			for(int j =0; j<gridSize; j++){
 				Tile tile = new Tile(i,j);
-				tile.setPreferredSize(new Dimension(64,64));
+				tile.setPreferredSize(new Dimension(buttonSize,buttonSize));
 				tiles[i][j]=tile;
 				jpGrid.add(tile);
 				//TODO: ASSIGN button ID's
@@ -78,6 +77,9 @@ public class BeeSweeper extends JFrame{
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+
+		//DEBUG: PRINT GRID TO CONSOLE
+		this.printGrid();
 	}
 
 	public void assignBees(int b, int beeAmount){
@@ -93,6 +95,21 @@ public class BeeSweeper extends JFrame{
 			System.out.println(""+beeLocation);
 		}
 	}
+
+	public void printGrid(){
+		for( int i = 0; i<gridSize; i++){
+			for( int j = 0; j<gridSize; j++){
+				Tile tile = tiles[i][j];
+				if(tile.isBee()){
+					System.out.print("B ");
+				}else{
+					System.out.print(""+tile.getBeeCount()+" ");
+				}
+			}
+			System.out.println();
+		}
+	}
+
 
 	public int calcBees(int y, int x){
 		int beeCount=0;
@@ -150,29 +167,112 @@ public class BeeSweeper extends JFrame{
 	public void floodFill(Tile tile){
 		int x = tile.getTileX();
 		int y = tile.getTileY();
+		ArrayList<Tile> floodFillTiles = new ArrayList<Tile>();
 		//LEFT x-1
-		if(x > 0 ){
+		while(x > 0 && !tile.isBee()){
+			Tile tempTile = tiles[x][y];
+			floodFillTiles.add(tempTile);
+			if(0 < tempTile.getBeeCount()){
+				x = 1;
+			}
+			x--;
 		}
+
 		//RIGHT x+1
-		if(x < gridSize-1){
+		x = tile.getTileX();
+		y = tile.getTileY();
+		while(x < gridSize && !tile.isBee() && 0 == tile.getBeeCount()){
+			Tile tempTile = tiles[x][y];
+			floodFillTiles.add(tempTile);
+			if( 0 < tempTile.getBeeCount()){
+				x = gridSize-1;
+			}
+			x++;
 		}
+
 		//UP y-1
-		if(y > 0){
+		x = tile.getTileX();
+		y = tile.getTileY();
+		while(y > 0 && !tile.isBee() && 0 == tile.getBeeCount()){
+			Tile tempTile = tiles[x][y];
+			floodFillTiles.add(tempTile);
+			if( 0 < tempTile.getBeeCount()){
+				y = 1;
+			}
+			y--;
 		}
+
 		//BOTTOM y+1
-		if(y < gridSize-1){
+		x = tile.getTileX();
+		y = tile.getTileY();
+		while(y < gridSize && !tile.isBee() && 0 == tile.getBeeCount()){
+			Tile tempTile = tiles[x][y];
+			floodFillTiles.add(tempTile);
+			if( 0 < tempTile.getBeeCount()){
+				y = gridSize-1;
+			}
+			y++;
 		}
+
 		//TOP-LEFT y-1 x-1
-		if( (x > 0) && (y > 0) ){
+		x = tile.getTileX();
+		y = tile.getTileY();
+		while(y > 0 && x > 0 && !tile.isBee() && 0 == tile.getBeeCount()){
+			Tile tempTile = tiles[x][y];
+			floodFillTiles.add(tempTile);
+			if( 0 < tempTile.getBeeCount()){
+				y = 1;
+				x = 1;
+			}
+			y--;
+			x--;
 		}
+
 		//TOP-RIGHT y+1 x+1
-		if( (x < gridSize-1) && (y < gridSize-1) ){
+		x = tile.getTileX();
+		y = tile.getTileY();
+		while(y < gridSize && x < gridSize && !tile.isBee() && 0 == tile.getBeeCount()){
+			Tile tempTile = tiles[x][y];
+			floodFillTiles.add(tempTile);
+			if( 0 < tempTile.getBeeCount()){
+				y = gridSize-1;
+				x = gridSize-1;
+			}
+			x++;
+			y++;
 		}
+
 		//BOTTOM-LEFT y+1 x-1
-		if( (x > 0) && (y < gridSize-1) ){
+		x = tile.getTileX();
+		y = tile.getTileY();
+		while(y < gridSize && x > 0 && !tile.isBee() && 0 == tile.getBeeCount()){
+			Tile tempTile = tiles[x][y];
+			floodFillTiles.add(tempTile);
+			if( 0 < tempTile.getBeeCount()){
+				y = gridSize-1;
+				x = 1;
+			}
+			x--;
+			y++;
 		}
+
 		//TOP-RIGHT y-1 x+1
-		if( (x < gridSize-1) && (y > 0) ){
+		x = tile.getTileX();
+		y = tile.getTileY();
+		while(y > 0 && x < gridSize && !tile.isBee() && 0 == tile.getBeeCount()){
+			Tile tempTile = tiles[x][y];
+			floodFillTiles.add(tempTile);
+			if( 0 < tempTile.getBeeCount()){
+				y = 1;
+				x = gridSize-1;
+			}
+			x++;
+			y--;
+		}
+
+		for(Tile tempTile : floodFillTiles){
+			tempTile.setText(""+tempTile.getBeeCount());
+			tempTile.hasBeenPressed(true);
 		}
 	}
 
@@ -202,8 +302,8 @@ public class BeeSweeper extends JFrame{
 			if(tile.isBee()){
 				BeeSweeper.this.gameOver();
 			}else{
-				tile.setBackground(Color.DARK_GRAY);
 				tile.setText(""+tile.getBeeCount());
+				tile.hasBeenPressed(true);
 				if(tile.getBeeCount() == 0){
 					BeeSweeper.this.floodFill(tile);
 				}
@@ -220,8 +320,8 @@ public class BeeSweeper extends JFrame{
 		private int y;
 
 		public Tile(int y, int x){
-			this.y = y;
-			this.x = x;
+			this.x = y;
+			this.y = x;
 			super.setBackground(Color.LIGHT_GRAY);
 			super.setForeground(Color.WHITE);
 			super.setFocusPainted(false);
@@ -234,7 +334,13 @@ public class BeeSweeper extends JFrame{
 		public boolean isBee(){return isBee;}
 
 		public void hasBeenPressed(boolean beenPressed){
-			this.beenPressed = beenPressed;
+			if(beenPressed){
+				super.setBackground(Color.DARK_GRAY);
+				this.beenPressed = beenPressed;
+			}else{
+				super.setBackground(Color.LIGHT_GRAY);
+				this.beenPressed = beenPressed;
+			}
 		}
 
 		public boolean isPressed(){return beenPressed;}

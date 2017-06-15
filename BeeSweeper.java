@@ -10,6 +10,7 @@ import javax.swing.*;
 
 public class BeeSweeper extends JFrame{
 
+	private boolean won;
 	private int gridSize = 10;
 	private int beeAmount = 10;
 	private int buttonSize = 64;
@@ -33,6 +34,7 @@ public class BeeSweeper extends JFrame{
 		beeLocations = new int[beeAmount];
 		beeCounter = beeAmount;
 		tileCounter = gridSize*gridSize;
+		won = false;
 
 		//MenuBar
 		JMenuBar jmb = new JMenuBar();
@@ -211,6 +213,30 @@ public class BeeSweeper extends JFrame{
 			this.floodFill( tiles[x][y-1] );
 			this.floodFill( tiles[x][y+1] );
 		}
+		if((x >= 0) && (x < gridSize-1) && (y > 0) && (y < gridSize-1)){
+			tile.hasBeenPressed(true);
+			this.floodFill( tiles[x+1][y] );
+			this.floodFill( tiles[x][y-1] );
+			this.floodFill( tiles[x][y+1] );
+		}
+		if((x > 0) && (x <= gridSize-1) && (y > 0) && (y < gridSize-1)){
+			tile.hasBeenPressed(true);
+			this.floodFill( tiles[x-1][y] );
+			this.floodFill( tiles[x][y-1] );
+			this.floodFill( tiles[x][y+1] );
+		}
+		if((x > 0) && (x < gridSize-1) && (y >= 0) && (y < gridSize-1)){
+			tile.hasBeenPressed(true);
+			this.floodFill( tiles[x+1][y] );
+			this.floodFill( tiles[x-1][y] );
+			this.floodFill( tiles[x][y+1] );
+		}
+		if((x > 0) && (x < gridSize-1) && (y > 0) && (y <= gridSize-1)){
+			tile.hasBeenPressed(true);
+			this.floodFill( tiles[x+1][y] );
+			this.floodFill( tiles[x-1][y] );
+			this.floodFill( tiles[x][y-1] );
+		}
 	}
 
 	public void gameOver(){
@@ -227,7 +253,7 @@ public class BeeSweeper extends JFrame{
 	//TODO:
 	//Finish win condition
 	public void winGame(){
-		boolean won = false;
+		won = true;
 		for(int i =0; i< gridSize; i++){
 			for(int j =0; j<gridSize; j++){
 				if(!tiles[i][j].isPressed() && !tiles[i][j].isBee()){
@@ -344,3 +370,4 @@ public class BeeSweeper extends JFrame{
 		public int getTileY(){return y;}
 	}
 }
+

@@ -254,8 +254,6 @@ public class BeeSweeper extends JFrame{
 		new BeeSweeper();
 	}
 
-	//TODO:
-	//Fix win condition
 	public void winGame(){
 		boolean won = false;
 		for(int i =0; i< gridSize; i++){
@@ -316,7 +314,6 @@ public class BeeSweeper extends JFrame{
 			}
 			if(MouseEvent.BUTTON3 == me.getButton()){
 				tile.flippedFlagged();
-				BeeSweeper.this.decBeeCounter();
 			}
 		}
 
@@ -368,14 +365,18 @@ public class BeeSweeper extends JFrame{
 		public boolean isPressed(){return beenPressed;}
 
 		public void flippedFlagged(){
-			if(!this.isFlagged){
+			if(!this.isFlagged && !this.beenPressed){
 				isFlagged = true;
 				super.setText(flagSymbol);
 				BeeSweeper.this.decBeeCounter();
-			}
-			if(this.isFlagged && !this.beenPressed){
-				isFlagged = false;
-				super.setText("");
+			}else{
+				if(!this.beenPressed){
+					isFlagged = false;
+					super.setText("");
+					BeeSweeper.this.incBeeCounter();
+				}else{
+					return;
+				}
 			}
 		}
 

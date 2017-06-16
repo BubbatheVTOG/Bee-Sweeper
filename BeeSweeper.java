@@ -15,7 +15,7 @@ public class BeeSweeper extends JFrame{
 	private int buttonSize = 64;
 	private int beeCounter;
 	private int tileCounter;
-	private static final String beeSymbol = "\uD83D\uDC1D";
+	private static final String beeSymbol = "B";//"\uD83D\uDC1D";
 	private static final String flagSymbol = "\u2713";
 
 	private int[] beeLocations;
@@ -267,6 +267,17 @@ public class BeeSweeper extends JFrame{
 			}
 		}
 		if(won){
+			for(int i =0; i< gridSize; i++){
+				for(int j =0; j<gridSize; j++){
+					Tile tile = tiles[i][j];
+					tile.setBackground(Color.DARK_GRAY);
+					if(tile.isBee()){
+						tile.setText(beeSymbol);
+					}else{
+						tile.setText(String.valueOf(tile.getBeeCount()));
+					}
+				}
+			}
 			JOptionPane.showMessageDialog(null,"You WIN!","You WIN!",JOptionPane.ERROR_MESSAGE);
 			BeeSweeper.this.dispose();
 			System.gc();
